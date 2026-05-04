@@ -1,0 +1,15 @@
+[project]
+name = "01-ecommerce-analytics-lakehouse"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "boto3>=1.43.2",
+    "dbt-duckdb>=1.10.1",
+    "duckdb>=1.5.2",
+    "faker",
+    "pandas>=3.0.2",
+    "psycopg2-binary",
+    "pyarrow>=24.0.0",
+]

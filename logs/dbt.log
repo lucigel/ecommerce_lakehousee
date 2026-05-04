@@ -1,0 +1,30 @@
+[0m18:37:19.305616 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F83247CAD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F830E18F50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F833DF3ED0>]}
+
+
+============================== 18:37:19.427599 | 398c2b3e-f2b6-4039-ae9a-e1a0cc2c0d0b ==============================
+[0m18:37:19.427599 [info ] [MainThread]: Running with dbt=1.11.8
+[0m18:37:19.428277 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'no_print': 'None', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'printer_width': '80', 'write_json': 'True', 'empty': 'None', 'log_cache_events': 'False', 'introspect': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'profiles_dir': 'C:\\Users\\bluei\\.dbt', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'indirect_selection': 'eager', 'use_colors': 'True', 'invocation_command': 'dbt init ecom_transform', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m18:37:19.714199 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\bluei\.dbt
+[0m18:37:19.725825 [debug] [MainThread]: Starter project path: D:\01_Ecommerce_Analytics_Lakehouse\.venv\Lib\site-packages\dbt\include\starter_project
+[0m18:37:19.748392 [info ] [MainThread]: 
+Your new dbt project "ecom_transform" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m18:37:19.748932 [info ] [MainThread]: Setting up your profile.
+[0m18:38:22.891886 [info ] [MainThread]: Profile ecom_transform written to C:\Users\bluei\.dbt\profiles.yml using target's sample configuration. Once updated, you'll be able to start developing with dbt.
+[0m18:38:22.892894 [debug] [MainThread]: Command `dbt init` succeeded at 18:38:22.892760 after 63.77 seconds
+[0m18:38:22.893270 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F8349C2B10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F833E56F90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001F83495FAC0>]}
+[0m18:38:22.893633 [debug] [MainThread]: Flushing usage events
+[0m18:38:23.991022 [debug] [MainThread]: An error was encountered while trying to flush usage events
