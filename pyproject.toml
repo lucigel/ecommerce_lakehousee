@@ -9,7 +9,10 @@ dependencies = [
     "dbt-duckdb>=1.10.1",
     "duckdb>=1.5.2",
     "faker",
+    "fsspec>=2026.4.0",
+    "great-expectations>=1.17.0",
     "pandas>=3.0.2",
     "psycopg2-binary",
     "pyarrow>=24.0.0",
+    "s3fs>=0.4.2",
 ]

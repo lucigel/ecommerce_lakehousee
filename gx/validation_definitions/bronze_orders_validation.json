@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "194ce978-1ce0-4143-8e5a-ae35242e63cc",
+      "name": "orders_asset"
+    },
+    "batch_definition": {
+      "id": "33d56c56-b0cf-4be9-812a-3a0892e2295e",
+      "name": "orders_batch"
+    },
+    "datasource": {
+      "id": "a72bf0b7-558d-43bb-a861-566ef05df6a8",
+      "name": "pandas_datasource"
+    }
+  },
+  "id": "fd4af12a-2314-4da5-9df1-60ec2ed9fc5c",
+  "name": "bronze_orders_validation",
+  "suite": {
+    "id": "961db918-212b-4015-8c50-25b72f2588ae",
+    "name": "bronze_orders_suite"
+  }
+}
