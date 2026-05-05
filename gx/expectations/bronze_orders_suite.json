@@ -1,0 +1,76 @@
+{
+  "expectations": [
+    {
+      "id": "c0cbc7d7-f8fa-4067-afa5-a7b215d7ddc6",
+      "kwargs": {
+        "column": "order_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "1dee21de-818b-44c4-9c6b-cdf89d979706",
+      "kwargs": {
+        "column": "customer_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "18f2c3e4-9466-4e2b-b578-39ba1bbada75",
+      "kwargs": {
+        "column": "total_amount"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "3aa6a41f-6fd4-4533-b732-a643632f5382",
+      "kwargs": {
+        "max_value": 500000,
+        "min_value": 1000
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_table_row_count_to_be_between"
+    },
+    {
+      "id": "ea5e0e27-9433-4873-8efe-0ab5c8753e92",
+      "kwargs": {
+        "column": "order_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "2aea4889-c896-4952-ae0f-3210f7a80602",
+      "kwargs": {
+        "column": "order_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_be_unique"
+    },
+    {
+      "id": "e6f92b86-9df8-407c-99b3-b6713be1ae60",
+      "kwargs": {
+        "column": "total_amount",
+        "max_value": 10000000.0,
+        "min_value": 0.0
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_be_between"
+    }
+  ],
+  "id": "961db918-212b-4015-8c50-25b72f2588ae",
+  "meta": {
+    "great_expectations_version": "1.17.0"
+  },
+  "name": "bronze_orders_suite",
+  "notes": null
+}

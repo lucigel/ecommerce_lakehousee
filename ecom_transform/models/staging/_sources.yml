@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: "Raw data extracted from Postgres → Parquet on MinIO"
+    meta:
+      external_location: "s3://datalake/bronze/{name}/**/*.parquet"
+    tables:
+      - name: customers
+        description: "Raw customer data"
+      - name: products
+        description: "Raw product catalog"
+      - name: orders
+        description: "Raw order transactions"
+      - name: order_items
+        description: "Raw order line items"

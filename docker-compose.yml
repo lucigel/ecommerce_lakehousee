@@ -1,34 +1,121 @@
+x-airflow-common: &airflow-common
+  image: apache/airflow:3.2.1-python3.13
+  environment: &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+    AIRFLOW__CORE__FERNET_KEY: "81HqDtbqAywKSOumSha3BhWNOQRsj_dqRp4GUGn4pQ0="
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    # Airflow 3.0 SimpleAuthManager: define users + point to passwords file
+    AIRFLOW__SIMPLE_AUTH_MANAGER__USERS: '[{"username":"admin","role":"admin"}]'
+    AIRFLOW__SIMPLE_AUTH_MANAGER__PASSWORDS_FILE: "/opt/airflow/passwords/simple_auth_manager_passwords.json"
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./scripts:/opt/airflow/scripts
+    - ./ecom_transform:/opt/airflow/ecom_transform
+    - ./airflow:/opt/airflow/passwords  # mount passwords file
+
 services:
-  postgres: 
-    image: postgres:17 
+
+  # === SOURCE DATABASE ===
+  postgres:
+    image: postgres:17
     container_name: ecom-postgres
     environment:
-      POSTGRES_DB: ecommerce 
-      POSTGRES_USER: cinammon  
-      POSTGRES_PASSWORD: cinammonpass 
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: cinammon
+      POSTGRES_PASSWORD: cinammonpass
       TZ: Asia/Saigon
-    
     ports:
       - "5432:5432"
-
     volumes:
-      - postgres_data:/var/lib/postgresql/data 
+      - postgres_data:/var/lib/postgresql/data
 
-  
-  minio: 
-    image: minio/minio:latest 
-    container_name: ecom-minio 
+  # === DATA LAKE (MinIO — S3-compatible) ===
+  minio:
+    image: minio/minio:latest
+    container_name: ecom-minio
     ports:
-      - "9000:9000" # S3 API 
-      - "9001:9001" # Web Console 
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Web Console
     environment:
-      MINIO_ROOT_USER: cinammon  
-      MINIO_ROOT_PASSWORD: cinammonpass 
-
+      MINIO_ROOT_USER: cinammon
+      MINIO_ROOT_PASSWORD: cinammonpass
     command: server /data --console-address ":9001"
     volumes:
-      - minio_data:/data 
+      - minio_data:/data
+
+  # === ORCHESTRATION (Airflow 3.0) ===
+
+  # Metadata DB riêng cho Airflow
+  airflow-db:
+    image: postgres:15
+    container_name: ecom-airflow-db
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+    volumes:
+      - airflow_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Init: migrate DB schema — chạy 1 lần rồi exit (NORMAL behavior)
+  airflow-init:
+    <<: *airflow-common
+    container_name: ecom-airflow-init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - "airflow db migrate"
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+
+  # API Server + Web UI (Airflow 3.0: webserver -> api-server)
+  airflow-api-server:
+    <<: *airflow-common
+    container_name: ecom-airflow-web
+    command: airflow api-server
+    ports:
+      - "8082:8080"
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  # Scheduler
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: ecom-airflow-scheduler
+    command: airflow scheduler
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  # DAG Processor — Airflow 3.0: parse DAG files riêng biệt
+  airflow-dag-processor:
+    <<: *airflow-common
+    container_name: ecom-airflow-dag-processor
+    command: airflow dag-processor
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  superset:
+    image: apache/superset:latest
+    container_name: ecom-superset
+    ports:
+      - "8088:8088"
+    environment:
+      SUPERSET_SECRET_KEY: "ecom-lakehouse-secret-key-2024"
+    volumes:
+      - superset_home:/app/superset_home
+      - ./ecom_transform/warehouse.duckdb:/app/warehouse.duckdb
 
 volumes:
-  postgres_data: 
-  minio_data: 
+  postgres_data:
+  minio_data:
+  airflow_db_data:
+  superset_home:
